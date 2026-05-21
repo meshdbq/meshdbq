@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Development placeholder for meshdbq.com.">
+  <title>meshdbq.com | Development Placeholder</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #ffffff;
+      --text: #1c120f;
+      --muted: #6f5f59;
+      --accent: #a42412;
+      --accent-soft: #f5e8e4;
+      --line: #eadbd6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+      background: var(--bg);
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 32px 18px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+    }
+
+    main {
+      width: min(100%, 980px);
+      text-align: center;
+    }
+
+    .card {
+      padding: clamp(26px, 6vw, 70px) clamp(18px, 5vw, 56px);
+      background: #ffffff;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.8rem, 10vw, 7rem);
+      line-height: 0.9;
+      letter-spacing: -0.075em;
+    }
+
+    .message {
+      max-width: 680px;
+      margin: 24px auto 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      line-height: 1.65;
+    }
+
+    .divider {
+      width: min(100%, 560px);
+      height: 1px;
+      margin: 40px auto 28px;
+      background: linear-gradient(90deg, transparent, var(--line), transparent);
+    }
+
+    .developer-label {
+      margin: 0 0 18px;
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .developer-mark {
+      display: block;
+      width: min(100%, 780px);
+      margin: 0 auto;
+      background: #ffffff;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 32px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    footer {
+      margin-top: 18px;
+      color: #8b7b76;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 560px) {
+      .card {
+        padding-inline: 0;
+      }
+
+      h1 {
+        letter-spacing: -0.055em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main aria-labelledby="site-title">
+    <section class="card">
+      <p class="eyebrow">Development Placeholder</p>
+      <h1 id="site-title">meshdbq.com</h1>
+      <p class="message">This is a development placeholder for meshdbq.com. The site is being prepared and will be available soon.</p>
+
+      <div class="divider" aria-hidden="true"></div>
+
+      <p class="developer-label">Developed by</p>
+      <img class="developer-mark" src="assets/info.png" alt="Developer artwork for meshdbq.com">
+
+      <div class="status" aria-label="Site status: in development">
+        <span class="status-dot" aria-hidden="true"></span>
+        In development
+      </div>
+    </section>
+    <footer>&copy; <span id="year">2026</span> meshdbq.com</footer>
+  </main>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
