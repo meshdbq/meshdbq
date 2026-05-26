@@ -1,0 +1,1392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Dubuque Meshtastic Group is building a friendly off-grid mesh communication network for Dubuque, Asbury, and the surrounding Tri-State area.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://meshdbq.com/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://meshdbq.com/">
+  <meta property="og:title" content="Dubuque Meshtastic Group">
+  <meta property="og:description" content="Building local off-grid communication for Dubuque, Asbury, and the surrounding Tri-State area.">
+  <meta property="og:site_name" content="Dubuque Meshtastic Group">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Dubuque Meshtastic Group">
+  <meta name="twitter:description" content="A beginner-friendly community building local off-grid communication with Meshtastic and LoRa radios.">
+
+  <title>Dubuque Meshtastic Group</title>
+
+  <script>
+    // Theme is applied before paint. Saved choice wins. Without a saved choice,
+    // CSS defaults to light and respects the visitor's system preference.
+    try {
+      const savedTheme = localStorage.getItem('meshdbq-theme');
+      if (savedTheme === 'light' || savedTheme === 'dark') {
+        document.documentElement.dataset.theme = savedTheme;
+      }
+    } catch (error) {}
+  </script>
+
+  <style>
+    /* =========================================================
+       MeshDBQ single-file site styles
+       Copy/paste-friendly sections are marked throughout the HTML.
+       ========================================================= */
+
+    :root {
+      --bg: #f4f8ff;
+      --bg-2: #e6efff;
+      --surface: rgba(255, 255, 255, 0.84);
+      --surface-strong: #ffffff;
+      --ink: #102345;
+      --muted: #5c7196;
+      --line: rgba(24, 56, 109, 0.14);
+      --accent: #2d63d3;
+      --accent-2: #5d8df0;
+      --accent-3: #163f95;
+      --danger: #2d63d3;
+      --good: #2d63d3;
+      --shadow: 0 24px 80px rgba(22, 53, 106, 0.14);
+      --shadow-soft: 0 12px 40px rgba(22, 53, 106, 0.10);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max: 1120px;
+      --tap: 48px;
+      --font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #081224;
+        --bg-2: #0d1c36;
+        --surface: rgba(13, 28, 54, 0.80);
+        --surface-strong: #10213d;
+        --ink: #eff4ff;
+        --muted: #b3c2dd;
+        --line: rgba(231, 238, 255, 0.14);
+        --accent: #6e9cff;
+        --accent-2: #8db3ff;
+        --accent-3: #4d7ee6;
+        --danger: #6e9cff;
+        --good: #6e9cff;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+        --shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.28);
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #081224;
+      --bg-2: #0d1c36;
+      --surface: rgba(13, 28, 54, 0.80);
+      --surface-strong: #10213d;
+      --ink: #eff4ff;
+      --muted: #b3c2dd;
+      --line: rgba(231, 238, 255, 0.14);
+      --accent: #6e9cff;
+      --accent-2: #8db3ff;
+      --accent-3: #4d7ee6;
+      --danger: #6e9cff;
+      --good: #6e9cff;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+      --shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.28);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(93, 141, 240, 0.22), transparent 34rem),
+        radial-gradient(circle at 86% 10%, rgba(45, 99, 211, 0.18), transparent 30rem),
+        linear-gradient(135deg, var(--bg), var(--bg-2));
+      min-height: 100vh;
+      line-height: 1.55;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.22;
+      background-image:
+        linear-gradient(rgba(138, 85, 32, 0.10) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(138, 85, 32, 0.10) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 70%);
+    }
+
+    a { color: inherit; }
+
+    .skip-link {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      z-index: 100;
+      transform: translateY(-160%);
+      background: var(--surface-strong);
+      color: var(--ink);
+      padding: 0.75rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .skip-link:focus { transform: translateY(0); }
+
+    .shell {
+      width: min(calc(100% - 2rem), var(--max));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+      background: color-mix(in srgb, var(--bg) 78%, transparent);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-block: 0.75rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 auto;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(83, 43, 11, 0.16);
+    }
+
+    .brand-text {
+      display: grid;
+      line-height: 1.05;
+      min-width: 0;
+    }
+
+    .brand-text strong {
+      font-size: 0.98rem;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-text span {
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 0.2rem;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .desktop-links {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .desktop-links a {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0.6rem 0.75rem;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.92rem;
+      transition: background 180ms ease, color 180ms ease;
+    }
+
+    .desktop-links a:hover,
+    .desktop-links a:focus-visible {
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      color: var(--ink);
+      outline: none;
+    }
+
+    .theme-toggle {
+      min-height: 42px;
+      min-width: 42px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--ink);
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: none;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .theme-toggle:hover { transform: translateY(-1px); }
+    .theme-toggle:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent-2) 55%, transparent); outline-offset: 2px; }
+
+    main { position: relative; z-index: 1; }
+
+    .hero {
+      padding: clamp(2.75rem, 8vw, 6.5rem) 0 3rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+      gap: clamp(1.25rem, 4vw, 3.5rem);
+      align-items: center;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      padding: 0.55rem 0.75rem;
+      font-size: 0.88rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .status-dot {
+      width: 0.62rem;
+      height: 0.62rem;
+      border-radius: 50%;
+      background: var(--good);
+      box-shadow: 0 0 0 6px color-mix(in srgb, var(--good) 14%, transparent);
+    }
+
+    h1, h2, h3 { line-height: 1.05; margin: 0; letter-spacing: -0.045em; }
+
+    h1 {
+      margin-top: 1.15rem;
+      font-size: clamp(2.75rem, 12vw, 6.6rem);
+      max-width: 10ch;
+    }
+
+    .tagline {
+      margin: 1.2rem 0 0;
+      color: var(--muted);
+      max-width: 66ch;
+      font-size: clamp(1.08rem, 2.2vw, 1.28rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.65rem;
+    }
+
+    .button {
+      min-height: var(--tap);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      border-radius: 999px;
+      padding: 0.86rem 1.05rem;
+      border: 1px solid var(--line);
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
+      cursor: pointer;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+    .button:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent-2) 55%, transparent); outline-offset: 2px; }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--ink), color-mix(in srgb, var(--ink) 82%, var(--accent) 18%));
+      color: var(--surface-strong);
+      border-color: color-mix(in srgb, var(--ink) 60%, var(--line));
+      box-shadow: 0 18px 48px color-mix(in srgb, var(--accent) 26%, transparent);
+    }
+
+    :root[data-theme="dark"] .button-primary {
+      background: linear-gradient(135deg, var(--accent-2), var(--accent-3));
+      color: #ffffff;
+      border-color: color-mix(in srgb, var(--accent-2) 70%, var(--line));
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .button-primary {
+        background: linear-gradient(135deg, var(--accent-2), var(--accent-3));
+        color: #ffffff;
+        border-color: color-mix(in srgb, var(--accent-2) 70%, var(--line));
+      }
+    }
+
+    .button-secondary {
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero-note {
+      margin-top: 1rem;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .hero-summary {
+      margin-top: 1.2rem;
+      max-width: 760px;
+      border: 1px solid color-mix(in srgb, var(--accent-2) 48%, var(--line));
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--accent-2) 32%, transparent), transparent 13rem),
+        linear-gradient(135deg, color-mix(in srgb, var(--surface-strong) 94%, transparent), color-mix(in srgb, var(--accent-2) 16%, var(--surface)));
+      box-shadow: var(--shadow-soft);
+      padding: clamp(1rem, 3vw, 1.2rem);
+    }
+
+    .summary-copy {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 1rem;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.85rem;
+    }
+
+    .summary-kicker {
+      display: block;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 950;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .summary-copy p {
+      margin: 0;
+      color: var(--muted);
+      font-weight: 750;
+      text-align: right;
+    }
+
+    .summary-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 0.85rem;
+    }
+
+    .summary-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0.48rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--accent-2) 42%, var(--line));
+      background: color-mix(in srgb, var(--surface-strong) 80%, var(--accent-2) 20%);
+      color: var(--ink);
+      font-size: 0.86rem;
+      font-weight: 850;
+      box-shadow: 0 10px 28px color-mix(in srgb, var(--accent-2) 14%, transparent);
+    }
+
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin-top: 0.75rem;
+    }
+
+    .summary-stat {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: color-mix(in srgb, var(--surface-strong) 72%, transparent);
+      padding: 0.75rem 0.8rem;
+    }
+
+    .summary-stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.18rem;
+    }
+
+    .summary-stat strong {
+      display: block;
+      color: var(--ink);
+      font-size: 0.98rem;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at 20% 12%, color-mix(in srgb, var(--accent-2) 34%, transparent), transparent 11rem),
+        radial-gradient(circle at 80% 78%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 11rem),
+        linear-gradient(180deg, color-mix(in srgb, var(--surface-strong) 90%, transparent), color-mix(in srgb, var(--surface) 82%, transparent));
+      box-shadow: var(--shadow);
+      padding: clamp(1rem, 3vw, 1.35rem);
+      isolation: isolate;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 10% auto auto -22%;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in srgb, var(--accent-2) 30%, transparent), transparent 68%);
+      filter: blur(10px);
+      z-index: -1;
+    }
+
+    .antenna-stage {
+      position: relative;
+      min-height: 370px;
+      border-radius: calc(var(--radius-xl) - 8px);
+      background:
+        linear-gradient(145deg, color-mix(in srgb, var(--surface-strong) 88%, transparent), color-mix(in srgb, var(--surface) 72%, transparent)),
+        repeating-linear-gradient(0deg, transparent 0 24px, color-mix(in srgb, var(--line) 42%, transparent) 24px 25px),
+        repeating-linear-gradient(90deg, transparent 0 24px, color-mix(in srgb, var(--line) 42%, transparent) 24px 25px);
+      border: 1px solid var(--line);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+
+    .antenna-stage::before,
+    .antenna-stage::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+      width: 260px;
+      height: 260px;
+      opacity: 0.72;
+    }
+
+    .antenna-stage::after {
+      width: 180px;
+      height: 180px;
+      border-color: color-mix(in srgb, var(--accent-2) 34%, transparent);
+    }
+
+    .antenna-orb {
+      position: relative;
+      z-index: 1;
+      width: min(220px, 70%);
+      aspect-ratio: 1;
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at 36% 24%, color-mix(in srgb, var(--accent-2) 35%, transparent), transparent 48%),
+        linear-gradient(180deg, #2b1a10, #15100d);
+      border: 1px solid color-mix(in srgb, var(--accent-2) 26%, transparent);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 24px 60px rgba(83, 49, 18, 0.22);
+    }
+
+    .antenna-symbol {
+      width: 72%;
+      height: auto;
+      filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.18));
+    }
+
+    .section {
+      padding: clamp(2.2rem, 7vw, 4.8rem) 0;
+      scroll-margin-top: 88px;
+    }
+
+    .section-head {
+      display: grid;
+      gap: 0.75rem;
+      max-width: 780px;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-kicker {
+      color: var(--accent);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.76rem;
+    }
+
+    .section h2 {
+      font-size: clamp(2rem, 6vw, 4rem);
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.04rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+      padding: clamp(1rem, 3vw, 1.25rem);
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .card p { margin: 0; color: var(--muted); }
+
+    .icon-chip {
+      width: 42px;
+      height: 42px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 15px;
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      color: var(--accent);
+      font-weight: 900;
+      margin-bottom: 0.8rem;
+    }
+
+    .start-list {
+      counter-reset: steps;
+      display: grid;
+      gap: 0.75rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .start-list li {
+      counter-increment: steps;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.8rem;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 0.9rem;
+      background: color-mix(in srgb, var(--surface-strong) 64%, transparent);
+    }
+
+    .start-list li::before {
+      content: counter(steps, decimal-leading-zero);
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--accent);
+      color: var(--surface-strong);
+      font-weight: 900;
+      font-size: 0.82rem;
+    }
+
+    :root[data-theme="dark"] .start-list li::before { color: #281505; }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .start-list li::before { color: #281505; }
+    }
+
+    .start-list strong { display: block; line-height: 1.15; }
+    .start-list span { color: var(--muted); display: block; margin-top: 0.24rem; }
+
+    .settings-board {
+      display: grid;
+      grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .setting-mini {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .setting-mini:first-of-type { border-top: 0; }
+    .setting-mini strong { color: var(--ink); }
+
+    .setting-table {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .setting-row {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: 0.75rem;
+      padding: 0.85rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: color-mix(in srgb, var(--surface-strong) 58%, transparent);
+    }
+
+    .setting-row span:first-child { color: var(--muted); }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+      color: color-mix(in srgb, var(--accent) 80%, var(--ink));
+      background: color-mix(in srgb, var(--accent) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 16%, transparent);
+      padding: 0.12rem 0.36rem;
+      border-radius: 8px;
+    }
+
+    .screenshot-card {
+      border: 1px solid color-mix(in srgb, var(--accent-2) 38%, var(--line));
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 12%, transparent), transparent),
+        var(--surface);
+    }
+
+    .screenshot-list {
+      display: grid;
+      gap: 0.55rem;
+      margin: 0.8rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .screenshot-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      border-top: 1px solid var(--line);
+      padding-top: 0.55rem;
+      color: var(--muted);
+    }
+
+    .screenshot-list li:first-child { border-top: 0; padding-top: 0; }
+    .screenshot-list strong { color: var(--ink); }
+
+    .callout {
+      border: 1px solid color-mix(in srgb, var(--accent-2) 40%, var(--line));
+      border-radius: var(--radius-lg);
+      background: color-mix(in srgb, var(--accent-2) 12%, var(--surface));
+      padding: 1rem;
+      color: var(--muted);
+    }
+
+    .callout strong { color: var(--ink); }
+
+    .resource-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+
+    .resource-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      min-height: 64px;
+      padding: 0.9rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: color-mix(in srgb, var(--surface-strong) 62%, transparent);
+      text-decoration: none;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .resource-link:hover,
+    .resource-link:focus-visible {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--accent) 34%, var(--line));
+      outline: none;
+    }
+
+    .resource-link span {
+      color: var(--muted);
+      font-size: 0.92rem;
+      display: block;
+      margin-top: 0.1rem;
+    }
+
+    .faq {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+    }
+
+    summary {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem;
+      cursor: pointer;
+      font-weight: 900;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: "+";
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--accent);
+    }
+
+    details[open] summary::after { content: "-"; }
+
+    details p {
+      margin: 0;
+      padding: 0 1rem 1rem;
+      color: var(--muted);
+    }
+
+    details a { color: var(--accent); font-weight: 800; }
+
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .form {
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    label {
+      display: grid;
+      gap: 0.35rem;
+      font-weight: 800;
+    }
+
+    input, textarea {
+      width: 100%;
+      min-height: var(--tap);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: color-mix(in srgb, var(--surface-strong) 78%, transparent);
+      color: var(--ink);
+      font: inherit;
+      padding: 0.9rem 1rem;
+      outline: none;
+      transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    textarea { min-height: 160px; resize: vertical; }
+
+    input:focus, textarea:focus {
+      border-color: color-mix(in srgb, var(--accent) 54%, var(--line));
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent);
+    }
+
+    .privacy-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .form-status {
+      min-height: 1.4rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .honeypot {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--line);
+      padding: 2rem 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .footer strong { color: var(--ink); }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: end;
+    }
+
+    .footer-links a { color: var(--muted); text-decoration-thickness: 0.08em; text-underline-offset: 0.2em; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 960px) {
+      .desktop-links { display: none; }
+      .hero-grid,
+      .settings-board,
+      .contact-wrap { grid-template-columns: 1fr; }
+      .grid.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .antenna-stage { min-height: 360px; }
+      .antenna-orb { width: min(220px, 58%); }
+    }
+
+    @media (max-width: 720px) {
+      .shell { width: min(calc(100% - 1.1rem), var(--max)); }
+      .nav { min-height: 66px; }
+      .brand-text span { display: none; }
+      .hero { padding-top: 2rem; }
+      .hero-actions .button { width: 100%; }
+      .grid.two,
+      .grid.three,
+      .grid.four,
+      .resource-list { grid-template-columns: 1fr; }
+      .setting-row { grid-template-columns: 1fr; gap: 0.2rem; }
+      .hero-card { display: none; }
+      .summary-copy { display: block; }
+      .summary-copy p { margin-top: 0.35rem; text-align: left; }
+      .summary-stats { grid-template-columns: 1fr; }
+      .antenna-stage { min-height: 310px; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-links { justify-content: start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- =========================================================
+       HEADER / NAVIGATION
+       ========================================================= -->
+  <header class="site-header">
+    <nav class="shell nav" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Dubuque Meshtastic Group home">
+        <span class="brand-text">
+          <strong>Dubuque Meshtastic Group</strong>
+          <span>Dubuque & Tri-State mesh</span>
+        </span>
+      </a>
+
+      <div class="nav-actions">
+        <div class="desktop-links" aria-label="Page sections">
+          <a href="#start">Start Here</a>
+          <a href="#settings">Settings</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Join</a>
+        </div>
+        <button class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false" data-theme-toggle>
+          <span aria-hidden="true" data-theme-icon>◐</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- =========================================================
+         HERO SECTION
+         Replace FACEBOOK_URL below after the official group URL is ready.
+         ========================================================= -->
+    <section class="hero" id="top">
+      <div class="shell hero-grid">
+        <div class="reveal">
+          <div class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Several active local nodes • Facebook group • Monthly meetups</div>
+          <h1>meshdbq.com</h1>
+          <p class="tagline">Building a friendly, practical off-grid communication mesh for Dubuque, Asbury, and the surrounding Tri-State area.</p>
+
+          <div class="hero-summary" aria-label="Quick facts">
+            <div class="summary-copy">
+              <div>
+                <span class="summary-kicker">Quick facts</span>
+                <p>LoRa radios • beginner-friendly guidance • local community support</p>
+              </div>
+              <div class="summary-pills" aria-label="Core benefits">
+                <span class="summary-pill">Local-first resilience</span>
+                <span class="summary-pill">No cell service required</span>
+              </div>
+            </div>
+            <div class="summary-stats">
+              <div class="summary-stat"><span>Coverage goal</span><strong>Dubuque & Tri-State</strong></div>
+              <div class="summary-stat"><span>Community</span><strong>Facebook Group & Monthly meetups</strong></div>
+              <div class="summary-stat"><span>Best first step</span><strong>Join the Facebook group</strong></div>
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://www.facebook.com/linkIDhere" target="_blank" rel="noopener" data-facebook-link>
+              Join the Facebook Group <span aria-hidden="true">→</span>
+            </a>
+            <a class="button button-secondary" href="#start">Start Here</a>
+          </div>
+          <p class="hero-note">Everyone is welcome!</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         WHAT IS MESHTASTIC / WHO IT IS FOR
+         ========================================================= -->
+    <section class="section" id="about">
+      <div class="shell">
+        <div class="section-head reveal">
+          <span class="section-kicker">What this is</span>
+          <h2>Offgrid Text Messaging.</h2>
+          <p>Meshtastic is an open-source project that uses affordable LoRa radios to create a private, community-sized mesh. Your phone connects to a radio, then radios pass messages across the mesh without needing cell service, Wi-Fi, or internet.</p>
+        </div>
+        <div class="grid three">
+          <article class="card reveal">
+            <div class="icon-chip">01</div>
+            <h3>Beginner-friendly</h3>
+            <p>New to radios? Start with the group, use the local settings, and ask questions before changing advanced options.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon-chip">02</div>
+            <h3>Local resilience</h3>
+            <p>We are building the mesh around Dubuque, Asbury, and nearby communities so local nodes can help each other reach farther.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon-chip">03</div>
+            <h3>Useful outdoors</h3>
+            <p>Great for hikes, events, neighborhood preparedness, experiments, and learning how radio coverage behaves in real terrain.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         START HERE SECTION
+         ========================================================= -->
+    <section class="section" id="start">
+      <div class="shell grid two">
+        <div class="section-head reveal">
+          <span class="section-kicker">Start here</span>
+          <h2>Your useful path into the mesh.</h2>
+          <p>This page avoids hardware recommendations on purpose. The fastest path is to join the local group, confirm you are buying a US 915 MHz Meshtastic-compatible device, then use the suggested settings below.</p>
+          <div class="callout">
+            <strong>Most common frustration to avoid:</strong> the wrong device role. Nodes should not be set up as high-priority routing infrastructure.
+          </div>
+        </div>
+        <ol class="start-list reveal">
+          <li><div><strong>Join the Facebook group.</strong><span>Meet local operators, ask beginner questions, and get help with your first node.</span></div></li>
+          <li><div><strong>Choose US 915 MHz hardware.</strong><span>Before buying, make sure the device is compatible with Meshtastic and the US LoRa region.</span></div></li>
+          <li><div><strong>Flash firmware and connect an app.</strong><span>Use the official flasher, then configure from Android, iOS, or the Web client.</span></div></li>
+          <li><div><strong>Apply local settings.</strong><span>Use LongFast, long broadcast intervals, and the right node role for your use.</span></div></li>
+          <li><div><strong>Test from a better spot.</strong><span>Outside, higher, near a window, or on a ridge usually beats a pocket in a basement.</span></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         LOCAL SETTINGS SECTION
+         ========================================================= -->
+    <section class="section" id="settings">
+      <div class="shell">
+        <div class="section-head reveal">
+          <span class="section-kicker">Dubuque local settings</span>
+          <h2>Settings that keep the mesh reliable.</h2>
+          <p>These recommendations are designed to reduce unnecessary traffic, prevent role confusion, and make the network more useful as more people join.</p>
+        </div>
+
+        <div class="settings-board">
+          <aside class="card screenshot-card reveal" aria-label="Screenshot-friendly settings checklist">
+            <h3>Screenshot checklist</h3>
+            <p>Use this quick card when setting up a node in the field.</p>
+            <ul class="screenshot-list">
+              <li><span>LoRa preset</span><strong>LongFast</strong></li>
+              <li><span>Hardware region</span><strong>US / 915 MHz</strong></li>
+              <li><span>Mobile node role</span><strong>CLIENT_MUTE</strong></li>
+              <li><span>Stationary node role</span><strong>CLIENT / CLIENT_BASE</strong></li>
+              <li><span>Max hops</span><strong>3</strong></li>
+           <!--   <li><span>Channel utilization</span><strong>&lt; 25-30%</strong></li> -->
+            </ul>
+          </aside>
+
+          <div class="grid">
+            <article class="card reveal">
+              <h3>General setting for all nodes</h3>
+              <div class="setting-mini"><span>Preset</span><strong><code>LongFast</code> / <code>LONG_FAST</code></strong></div>
+              <div class="setting-mini"><span>Region and hardware</span><strong>US LoRa / 915 MHz</strong></div>
+              <div class="setting-mini"><span>Channel utilization target</span><strong>Keep under 25-30%</strong></div>
+              <p>Channel utilization and airtime are device metrics reported by Meshtastic. Check them in your connected app or Web client. Lower numbers mean more room for real messages and fewer traffic jams.</p>
+            </article>
+
+            <article class="card reveal">
+              <h3>Portable / pocket nodes</h3>
+              <div class="setting-table">
+                <div class="setting-row"><span>Device role</span><strong><code>CLIENT_MUTE</code></strong></div>
+                <div class="setting-row"><span>Node broadcast interval</span><strong>6 hours or more</strong></div>
+                <div class="setting-row"><span>Telemetry</span><strong>Disabled</strong></div>
+                <div class="setting-row"><span>Smart position</span><strong>Disabled unless temporarily needed</strong></div>
+                <div class="setting-row"><span>Position broadcast interval</span><strong>12 hours or more</strong></div>
+                <div class="setting-row"><span>Position update interval</span><strong>1 hour or more</strong></div>
+              </div>
+            </article>
+
+            <article class="card reveal">
+              <h3>Stationary nodes</h3>
+              <div class="setting-table">
+                <div class="setting-row"><span>Device role</span><strong><code>CLIENT</code> or <code>CLIENT_BASE</code></strong></div>
+                <div class="setting-row"><span>Node broadcast interval</span><strong>12 hours or more</strong></div>
+                <div class="setting-row"><span>Max hops</span><strong>3</strong></div>
+                <div class="setting-row"><span>Telemetry</span><strong>6 hours or more, or disabled</strong></div>
+                <div class="setting-row"><span>Smart position</span><strong>Disabled</strong></div>
+                <div class="setting-row"><span>Position broadcast interval</span><strong>18 hours or more</strong></div>
+              </div>
+            </article>
+
+            <div class="callout reveal">
+              <strong>Coordinate before using ROUTER or REPEATER roles.</strong> These roles are for strategic, stationary infrastructure. In a growing local mesh, the wrong role can create packet collisions, waste airtime, and make messages less reliable.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         GROUP RULES PLACEHOLDER
+         Not visible on the page. Add later if desired.
+
+         <section class="section" id="rules">
+           <div class="shell">
+             <div class="section-head">
+               <span class="section-kicker">Group guidelines</span>
+               <h2>Rules and best practices</h2>
+               <p>Add group-specific rules here when ready.</p>
+             </div>
+           </div>
+         </section>
+       ========================================================= -->
+
+    <!-- =========================================================
+         LOCAL INFO / EVENTS SECTION
+         ========================================================= -->
+    <section class="section" id="local">
+      <div class="shell">
+        <div class="section-head reveal">
+          <span class="section-kicker">Local terrain and events</span>
+          <h2>Height is the quiet superpower.</h2>
+          <p>Dubuque's hills, bluffs, trees, river valley, brick, metal, and indoor placement can all change range. A modest node in a great location can outperform a fancy node in a bad one.</p>
+        </div>
+        <div class="grid four">
+          <article class="card reveal">
+            <div class="icon-chip">↟</div>
+            <h3>Go higher</h3>
+            <p>Rooftops, upper floors, attic windows, and ridge lines usually improve line-of-sight across town.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon-chip">⌂</div>
+            <h3>Move outside</h3>
+            <p>Walls, basements, metal siding, and vehicles can quietly eat signal. Test near a window or outdoors.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon-chip">◌</div>
+            <h3>Use patience</h3>
+            <p>Nodes may not appear instantly. Try a better location, confirm region/preset, and ask the group to test.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon-chip">◆</div>
+            <h3>Monthly meetups</h3>
+            <p>Meetups are planned monthly. Event types will be announced in the Facebook group as the community grows.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         RESOURCES SECTION
+         ========================================================= -->
+    <section class="section" id="resources">
+      <div class="shell grid two">
+        <div class="section-head reveal">
+          <span class="section-kicker">Official resources</span>
+          <h2>The source-of-truth shelf.</h2>
+          <p>Use official Meshtastic resources for firmware, apps, and setup steps. Community advice is helpful, but firmware and app details change over time.</p>
+        </div>
+        <div class="resource-list reveal">
+          <a class="resource-link" href="https://meshtastic.org/" target="_blank" rel="noopener"><strong>Official Meshtastic site<span>Project overview</span></strong><span aria-hidden="true">↗</span></a>
+          <a class="resource-link" href="https://meshtastic.org/docs/getting-started/" target="_blank" rel="noopener"><strong>Getting started docs<span>First setup steps</span></strong><span aria-hidden="true">↗</span></a>
+          <a class="resource-link" href="https://flasher.meshtastic.org/" target="_blank" rel="noopener"><strong>Firmware flasher<span>Update a device</span></strong><span aria-hidden="true">↗</span></a>
+          <a class="resource-link" href="https://play.google.com/store/apps/details?id=com.geeksville.mesh" target="_blank" rel="noopener"><strong>Android app<span>Google Play</span></strong><span aria-hidden="true">↗</span></a>
+          <a class="resource-link" href="https://apps.apple.com/us/app/meshtastic/id1586432531" target="_blank" rel="noopener"><strong>iOS app<span>App Store</span></strong><span aria-hidden="true">↗</span></a>
+          <a class="resource-link" href="https://client.meshtastic.org/" target="_blank" rel="noopener"><strong>Web client<span>Browser-based client</span></strong><span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         FAQ SECTION
+         ========================================================= -->
+    <section class="section" id="faq">
+      <div class="shell">
+        <div class="section-head reveal">
+          <span class="section-kicker">FAQ</span>
+          <h2>Beginner questions, answered without static.</h2>
+          <p>These answers are based on official Meshtastic documentation and the local settings above.</p>
+        </div>
+        <div class="faq reveal">
+          <details>
+            <summary>Do I need a license?</summary>
+            <p>For normal Meshtastic LoRa use, a license is generally not required in the United States. Licensed amateur radio use is optional and comes with different privileges and restrictions, including restrictions around encryption. You are responsible for following applicable rules.</p>
+          </details>
+          <details>
+            <summary>How far can Meshtastic reach?</summary>
+            <p>Range depends on terrain, elevation, antenna placement, frequency, settings, and obstructions. Around Dubuque, hills, trees, buildings, and the river valley all matter. Test outside and higher before assuming something is broken.</p>
+          </details>
+          <details>
+            <summary>Does it work without cell service?</summary>
+            <p>Yes. Your phone or computer connects to a Meshtastic radio, and the radios communicate over LoRa. Cell service, Wi-Fi, and internet are not required for local mesh messages.</p>
+          </details>
+          <details>
+            <summary>Can I use it during emergencies?</summary>
+            <p>Meshtastic can be useful for preparedness, events, and local backup communication, but it is not a guaranteed emergency service and does not replace 911, weather radios, official alerts, or public safety systems.</p>
+          </details>
+          <details>
+            <summary>What device should I buy first?</summary>
+            <p>This group does not recommend a specific starter device on this page. Look for Meshtastic-compatible hardware for the US 915 MHz region, then ask the Facebook group before buying so locals can help you avoid compatibility surprises.</p>
+          </details>
+          <details>
+            <summary>Can I hide my location?</summary>
+            <p>Yes. Location sharing is configurable. You can disable position features, reduce precision, or choose when location is shared. Review location and channel settings before joining public or shared channels.</p>
+          </details>
+          <details>
+            <summary>What settings should I use in Dubuque?</summary>
+            <p>Use LongFast, US / 915 MHz hardware, and the local role guidance above. Portable nodes should usually use CLIENT_MUTE. Stationary and outdoor nodes should usually use CLIENT or CLIENT_BASE. Keep channel utilization under 25-30% when possible.</p>
+          </details>
+          <details>
+            <summary>Why am I not seeing other nodes?</summary>
+            <p>Common causes include being indoors or low, wrong region or preset, poor antenna placement, no nearby active nodes, app pairing issues, channel mismatch, or high local channel utilization. Move outside, get higher, verify US / 915 MHz and LongFast, then ask the group for a test.</p>
+          </details>
+          <details>
+            <summary>What antenna should I use?</summary>
+            <p>Use an antenna matched to your LoRa frequency, connector, and device requirements. Placement often matters more than chasing the biggest antenna: height, line-of-sight, and avoiding walls or metal are big wins.</p>
+          </details>
+          <details>
+            <summary>Can I put a node at my house, farm, or business?</summary>
+            <p>Yes. A stable, elevated location can help the local mesh. Use CLIENT or CLIENT_BASE, keep intervals long, and coordinate with the group before trying ROUTER or REPEATER roles.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+    <!-- =========================================================
+         CONTACT / JOIN SECTION
+         ========================================================= -->
+    <section class="section" id="contact">
+      <div class="shell">
+        <div class="section-head reveal">
+          <span class="section-kicker">Get involved</span>
+          <h2>Join first. Ask anything.</h2>
+          <p>The Facebook group is the front door for local help, meetup details, setup checks, and testing with nearby nodes.</p>
+        </div>
+        <div class="card reveal" style="max-width: 760px;">
+          <h3>Best first step</h3>
+          <p style="margin:0 0 1rem; color: var(--muted);">Join the Facebook group to meet local members, ask beginner questions, and get help with your first node.</p>
+          <a class="button button-primary" href="https://www.facebook.com/linkIDhere" target="_blank" rel="noopener" data-facebook-link>Join the Facebook Group <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================
+       FOOTER / DISCLAIMERS
+       ========================================================= -->
+  <footer class="footer">
+    <div class="shell footer-grid">
+      <div>
+        <strong>Dubuque Meshtastic Group</strong>
+        <p>This site is not affiliated with or endorsed by the Meshtastic project. Meshtastic® is a registered trademark of Meshtastic LLC.</p>
+        <p>Safety note: Meshtastic can support local preparedness and events, but it is not a guaranteed emergency service. Users are responsible for following applicable radio regulations and for understanding what information they share over mesh channels.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#top">Top</a>
+        <a href="#settings">Settings</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://meshtastic.org/" target="_blank" rel="noopener">Meshtastic.org</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* =========================================================
+       MeshDBQ page behavior
+       - Light/dark mode with saved preference
+       - Subtle reveal animations
+       ========================================================= */
+
+    const FACEBOOK_URL = 'https://www.facebook.com/linkIDhere';
+
+    document.querySelectorAll('[data-facebook-link]').forEach((link) => {
+      link.href = FACEBOOK_URL;
+    });
+
+    const themeButton = document.querySelector('[data-theme-toggle]');
+    const themeIcon = document.querySelector('[data-theme-icon]');
+    const themeKey = 'meshdbq-theme';
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function getEffectiveTheme() {
+      const selected = document.documentElement.dataset.theme;
+      if (selected === 'light' || selected === 'dark') return selected;
+      return systemDark.matches ? 'dark' : 'light';
+    }
+
+    function updateThemeButton() {
+      const activeTheme = getEffectiveTheme();
+      themeButton.setAttribute('aria-pressed', String(activeTheme === 'dark'));
+      themeButton.setAttribute('aria-label', activeTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      themeIcon.textContent = activeTheme === 'dark' ? '☀' : '☾';
+    }
+
+    themeButton.addEventListener('click', () => {
+      const nextTheme = getEffectiveTheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = nextTheme;
+      try { localStorage.setItem(themeKey, nextTheme); } catch (error) {}
+      updateThemeButton();
+    });
+
+    systemDark.addEventListener?.('change', updateThemeButton);
+    updateThemeButton();
+
+    const revealItems = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revealItems.forEach((item) => observer.observe(item));
+    } else {
+      revealItems.forEach((item) => item.classList.add('is-visible'));
+    }
+
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('form-status');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+
+      if (data.get('website')) return;
+
+      const payload = {
+        email: String(data.get('email') || '').trim(),
+        subject: String(data.get('subject') || '').trim(),
+        message: String(data.get('message') || '').trim(),
+        page: window.location.href
+      };
+
+      if (!payload.email || !payload.subject || !payload.message) {
+        status.textContent = 'Please fill out all fields.';
+        return;
+      }
+
+      status.textContent = 'Sending...';
+
+      try {
+        const response = await fetch(CONTACT_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) throw new Error('Contact endpoint error');
+        form.reset();
+        status.textContent = 'Message sent. Thanks for reaching out.';
+      } catch (error) {
+        status.textContent = 'The contact form backend is not connected yet. Please use the Facebook group for now.';
+      }
+    });
+  </script>
+</body>
+</html>
